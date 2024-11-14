@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #fff;
+            overflow: hidden; /* Prevent scrollbars */
+        }
+        .background-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1; /* Send video behind content */
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+        .section {
+            background: rgba(80, 43, 91, 0.6); /* Semi-transparent background */
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            margin: 10px 0;
+            max-width: 600px;
+            width: 100%;
+        }
+        .current-date {
+            font-size: 1.5em;
+            color: #00BFFF; /* Deep sky blue */
+        }
+        .countdown-date, .countdown-time {
+            font-size: 1.5em;
+        }
+        .countdown-date {
+            color: #FFD700; /* Gold */
+        }
+        .countdown-time {
+            font-weight: bolder;
+            font-size: 3em;
+            padding-top: 4%;
+            padding-bottom: 4%;
+            max-width: 800px;
+           height: 20%;
+            color: #f40909; /* Orange red */
+            background-color: rgba(12, 12, 12, 0.845);
+        }
+    </style>
+</head>
+<body>
+    <video class="background-video" autoplay muted loop>
+        <source src="vdo.mp4" type="video/mp4">
+    </video>
+
+    <div class="container">
+        <div class="section countdown-date" id="countdownDate"></div>
+        <div class="section countdown-time" id="countdownTime"></div>
+        <div class="section current-date" id="currentDate"></div>
+    </div>
+
+    <script>
+        function updateCountdown() {
+            const now = new Date();
+            const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const targetDate = new Date(now.getFullYear(), 11, 30); // December 30th
+            const timeDifference = targetDate - now;
+
+            // Display current day and date
+            const currentDayName = dayNames[now.getDay()];
+            const currentDate = `${currentDayName}, ${now.getDate()} ${monthNames[now.getMonth()]} ${now.getFullYear()}`;
+            document.getElementById('currentDate').innerHTML = `Today is ${currentDate}`;
+
+            // Display countdown date
+            const countdownDate = `Countdown to December 30th ${now.getFullYear()}`;
+            document.getElementById('countdownDate').innerHTML = countdownDate;
+
+            if (timeDifference <= 0) {
+                document.getElementById('countdownTime').innerHTML = "The date has passed!";
+                return;
+            }
+
+            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            document.getElementById('countdownTime').innerHTML =
+                `${days} days left.. <br/><br/> ${hours} hours ${minutes} minutes ${seconds} seconds`;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // Initial call to display immediately
+    </script>
+</body>
+</html>
